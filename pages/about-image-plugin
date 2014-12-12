@@ -24,9 +24,9 @@
       "text": "Drop an image onto the Factory to create an image plugin."
     },
     {
-      "type": "paragraph",
+      "type": "html",
       "id": "f50d8d62625ec3c0",
-      "text": "<h3> Sizing and Editing"
+      "text": "<h3>Sizing and Editing</h3>"
     },
     {
       "type": "paragraph",
@@ -303,6 +303,27 @@
         "text": "We recommend adding images to a scratch page, revising the caption until satisfied, then dragging the image to its desired location."
       },
       "date": 1361758188668
+    },
+    {
+      "type": "edit",
+      "id": "f50d8d62625ec3c0",
+      "item": {
+        "type": "html",
+        "id": "f50d8d62625ec3c0",
+        "text": "<h3> Sizing and Editing"
+      },
+      "date": 1418315679266
+    },
+    {
+      "type": "edit",
+      "id": "f50d8d62625ec3c0",
+      "item": {
+        "type": "html",
+        "id": "f50d8d62625ec3c0",
+        "text": "<h3>Sizing and Editing</h3>"
+      },
+      "date": 1418315689240
     }
-  ]
+  ],
+  "plugin": "image"
 }
