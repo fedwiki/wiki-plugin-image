@@ -27,11 +27,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "devDependencies": {
-    "grunt": "~0.4.x",
-    "grunt-contrib-coffee": "~0.7.x",
-    "grunt-contrib-watch": "~0.5.x"
-  },
+  "devDependencies": {},
   "license": "MIT",
   "repository": {
     "type": "git",
