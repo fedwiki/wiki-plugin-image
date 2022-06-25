@@ -66,7 +66,7 @@ emit = ($item, item) ->
             form = new FormData()
             form.append 'assets', '/plugins/image'
             form.append 'uploads[]', file, file.name
-            fetch('/plugin/assets/upload', {
+            fetch('/plugin/image/upload', {
               method: 'POST',
               body: form
             })
@@ -185,7 +185,7 @@ editor = (spec) ->
           form = new FormData()
           form.append 'assets', '/plugins/image'
           form.append 'uploads[]', file, file.name
-          fetch('/plugin/assets/upload', {
+          fetch('/plugin/image/upload', {
             method: 'POST',
             body: form
           })
