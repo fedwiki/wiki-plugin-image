@@ -183,9 +183,8 @@ editor = (spec) ->
             { type: blob.type }
           )
           form = new FormData()
-          form.append 'assets', '/plugins/image'
-          form.append 'uploads[]', file, file.name
-          fetch('/plugin/image/upload', {
+          form.append 'image', file, file.name
+          fetch("/plugin/image/upload/#{archiveFilename}", {
             method: 'POST',
             body: form
           })

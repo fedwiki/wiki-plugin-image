@@ -1,4 +1,4 @@
-/*/*.js
-/*/*.map
+/client/image.js
+/client/*.map
 node_modules
 npm-debug.log
