@@ -4,9 +4,14 @@
 
 
 md5 = require './md5'
+exifr = require('exifr') 
 
 
 emit = ($item, item) ->
+
+  if (!$("link[href='/plugins/image/image.css']").length)
+    $('<link rel="stylesheet" href="/plugins/image/image.css" type="text/css">').appendTo("head")
+
   alternates = ($item) ->
     sites = []
     if remote = $item.parents('.page').data('site')
@@ -33,6 +38,14 @@ emit = ($item, item) ->
     if sites.length is 0
       $( this ).off('error')
     )
+  if item.location
+    $item.addClass 'marker-source'
+    $item.get(0).markerData = ->
+      return { 
+        lat: item.location.latitude
+        lon: item.location.longitude
+        label: wiki.resolveLinks(item.text)
+        }
   if isOwner
     img.on('load', () ->
       if $( this ).attr('src') isnt item.url
@@ -218,6 +231,10 @@ editor = (spec) ->
   }
 
   if newImage
+    imageLocation = await exifr.gps(imageDataURL)
+    if imageLocation
+      exifrAvailable = true
+      item.location = imageLocation
     imgPossibleSize = await imageSize(imageDataURL)
     imgURL = imageDataURL
   else
@@ -243,14 +260,25 @@ editor = (spec) ->
 
   $item.append """<div id="image-options"></div>"""
 
+  if item.location
+    $('#image-options').append """
+    <div>
+      <label>Location:</label>
+      <input type='text' id='location-lat' value='#{item.location.latitude}'>
+      <input type='text' id='location-lon' value='#{item.location.longitude}'>
+    </div>
+    """
+
   if imgPossibleSize is "wide"
     $('#image-options').append """
-    <label>Image Size:</label>
-    <select id="size-select">
-      <option value="" disabled>--Please choose a size--</option>
-      <option value="thumbnail">Half page width</option>
-      <option value="wide">Full page width</option>
-    </select>
+    <div>
+      <label>Image Size:</label>
+      <select id="size-select">
+        <option value="" disabled>--Please choose a size--</option>
+        <option value="thumbnail">Half page width</option>
+        <option value="wide">Full page width</option>
+      </select>
+    </div>
     """
 
     $item.find("#size-select option[value='#{imgCurrentSize}']").attr('selected', true)
