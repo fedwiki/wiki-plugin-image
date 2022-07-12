@@ -21,6 +21,8 @@ emit = ($item, item) ->
     for action in journal.slice(0).reverse()
       if action.site? and not sites.includes(action.site)
         sites.push action.site
+      if action.attribution?.site? and not sites.includes(action.attribution.site)
+        sites.push action.attribution.site
     sites.map( (site) -> wiki.site(site).getURL(item.url.replace(/^\//, '')))
 
   item.text ||= item.caption
@@ -38,7 +40,7 @@ emit = ($item, item) ->
     if sites.length is 0
       $( this ).off('error')
     )
-  if item.location
+  if item.location?.latitude and item.location?.longitude
     $item.addClass 'marker-source'
     $item.get(0).markerData = ->
       return { 
@@ -181,6 +183,14 @@ editor = (spec) ->
       item.size = $item.find('#size-select').val() ? 'thumbnail'
       item.width = $item.children('img')[0].width
       item.height = $item.children('img')[0].height
+      if $item.find('#location-lat').val() and $item.find('#location-lon').val()
+        item.location = { latitude: $item.find('#location-lat').val(), longitude: $item.find('#location-lon').val() }
+      else
+        delete item.location
+        $item.removeClass 'marker-source'
+
+        
+
       if newImage
         # archive image
         archiveImage = await resizeImage(imageDataURL, 'archive')
@@ -210,26 +220,23 @@ editor = (spec) ->
 
 
       wiki.doPlugin $item.empty(), item
-      return if item.text is original.text and item.size is original.size
+      return if item is original
       if item.hasOwnProperty('caption')
         delete item.caption 
       wiki.pageHandler.put $page, { type: 'edit', id: item.id, item: item }
 
     else
+      wiki.pageHandler.put $page, { type: 'remove', id: item.id }
       index = $(".item").index($item)
       $item.remove()
-      plugin.renderFrom index
+      wiki.renderFrom index
 
 
 
   return if $item.hasClass 'imageEditing'
   $item.addClass 'imageEditing'
   $item.unbind()
-  original = {
-    text: item.text ? ''
-    size: item.size ? ''
-  }
-
+  original = JSON.parse(JSON.stringify(item))
   if newImage
     imageLocation = await exifr.gps(imageDataURL)
     if imageLocation
@@ -260,14 +267,27 @@ editor = (spec) ->
 
   $item.append """<div id="image-options"></div>"""
 
-  if item.location
-    $('#image-options').append """
-    <div>
-      <label>Location:</label>
-      <input type='text' id='location-lat' value='#{item.location.latitude}'>
-      <input type='text' id='location-lon' value='#{item.location.longitude}'>
-    </div>
-    """
+  $('#image-options').append """
+    <details #{if item.location then 'open' else ''}>
+    <summary>Location:</summary>
+    <input type='text' id='location-lat' value='#{item.location?.latitude or ''}'>
+    <input type='text' id='location-lon' value='#{item.location?.longitude or ''}'>
+  </details>
+  """
+
+  pasteLocation = (event) ->
+    event.preventDefault()
+    separator = /[,\/]/
+    pasted = (event.originalEvent.clipboardData or window.clipboardData).getData('text')
+    if separator.test(pasted)
+      [pasteLat, pasteLon] = pasted.split(separator).map (i) => i.trim()
+      if !(isNaN(pasteLat) or isNaN(pasteLon))
+        item.location = { latitude: pasteLat, longitude: pasteLon }
+        $item.find('#location-lat').val(pasteLat)
+        $item.find('#location-lon').val(pasteLon)
+  
+  $('#location-lat').on('paste', pasteLocation);
+  $('#location-lon').on('paste', pasteLocation);
 
   if imgPossibleSize is "wide"
     $('#image-options').append """
@@ -351,10 +371,6 @@ editor = (spec) ->
           tmp.src = dataURL
     .then ->
       return dataURL
-
-
-
-
 
 
 
