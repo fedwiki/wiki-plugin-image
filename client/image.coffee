@@ -9,9 +9,6 @@ exifr = require('exifr')
 
 emit = ($item, item) ->
 
-  if (!$("link[href='/plugins/image/image.css']").length)
-    $('<link rel="stylesheet" href="/plugins/image/image.css" type="text/css">').appendTo("head")
-
   alternates = ($item) ->
     sites = []
     if remote = $item.parents('.page').data('site')
