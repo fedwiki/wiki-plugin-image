@@ -270,8 +270,8 @@ editor = (spec) ->
   $('#image-options').append """
     <details #{if item.location then 'open' else ''}>
     <summary>Location:</summary>
-    <input type='text' id='location-lat' value='#{item.location?.latitude or ''}'>
-    <input type='text' id='location-lon' value='#{item.location?.longitude or ''}'>
+    <input type='text' id='location-lat' value='#{item.location?.latitude or ''}' placeholder='Latitude'>
+    <input type='text' id='location-lon' value='#{item.location?.longitude or ''}' placeholder='Longitude'>
   </details>
   """
 

@@ -8,9 +8,7 @@ startServer = (params) => {
 
   const upload = multer({ dest: path.join(argv.commons, 'uploads')})
 
-  console.info('*** image server start ***')
-
-//  console.dir(app)
+  console.info('starting plugin wiki-plugin-image')
 
   // check commons folder exists
   fs.stat(argv.commons, (err, stats) => {
