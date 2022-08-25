@@ -50,7 +50,6 @@ startServer = (params) => {
 
   app.post(/^\/plugin\/image\/upload\/([a-f0-9]{32}\.\w+)$/, authorized, upload.single('image'), function(req, res) {
     console.log('image - upload', req.params[0])
-    console.dir(req.file)
     imageFile = req.params[0]
     commonsFile = path.join(argv.commons, imageFile)
     assetFile = path.join(argv.assets, 'plugins', 'image', imageFile)
@@ -94,9 +93,6 @@ startServer = (params) => {
         })
       }
     })
-
-    //console.dir(req)
-    console.log(req.files)
   })  
 }
 
