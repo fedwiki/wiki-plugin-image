@@ -133,6 +133,8 @@ editor = (spec) ->
           return "thumbnail"
 
   { $item, item } = spec
+  return unless $('.editEnable').is(':visible')
+  
   # if new image is being added we have some extra information
   { imageDataURL, filename, imageSourceURL, imageCaption } = spec if item.type is 'factory'
   if item.type is 'factory'
