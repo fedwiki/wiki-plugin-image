@@ -176,58 +176,67 @@ editor = (spec) ->
     #   item.url = await resizeImage imageDataURL
     $item.removeClass 'imageEditing'
     $item.unbind()
-    if item.text = $item.find('textarea').val()
+    if $item.find('textarea').val().length > 0
+
+      captionChanged = item.text != $item.find('textarea').val()
+      locationChanged = item.location? and ( item.location.latitude != $item.find('#location-lat').val() or item.location.longitude != $item.find('#location-lon').val() ) 
+      sizeChanged = item.size? and $item.find('#size-select').val()? and item.size != $item.find('#size-select').val()
+
+      item.text = $item.find('textarea').val()
       item.size = $item.find('#size-select').val() ? 'thumbnail'
-      item.width = $item.children('img')[0].width
-      item.height = $item.children('img')[0].height
+      if newImage or sizeChanged
+        item.width = $item.children('img')[0].width
+        item.height = $item.children('img')[0].height
       if $item.find('#location-lat').val() and $item.find('#location-lon').val()
         item.location = { latitude: $item.find('#location-lat').val(), longitude: $item.find('#location-lon').val() }
       else
         delete item.location
         $item.removeClass 'marker-source'
 
-        
-
-      if newImage
-        # archive image
-        archiveImage = await resizeImage(imageDataURL, 'archive')
-        archiveFilename = md5(imageDataURL) + '.jpg'
-        await fetch(archiveImage)
-        .then (response) ->
-          response.blob()
-        .then (blob) ->
-          file = new File(
-            [blob],
-            archiveFilename,
-            { type: blob.type }
-          )
-          form = new FormData()
-          form.append 'image', file, file.name
-          fetch("/plugin/image/upload/#{archiveFilename}", {
-            method: 'POST',
-            body: form
-          })
+      # only save if newImage , caption, location, or size has been changed.
+      if newImage or captionChanged or locationChanged or sizeChanged
+        if newImage
+          # archive image
+          archiveImage = await resizeImage(imageDataURL, 'archive')
+          archiveFilename = md5(imageDataURL) + '.jpg'
+          await fetch(archiveImage)
           .then (response) ->
-            if response.ok
-              item.url = "/assets/plugins/image/" + archiveFilename
+            response.blob()
+          .then (blob) ->
+            file = new File(
+              [blob],
+              archiveFilename,
+              { type: blob.type }
+            )
+            form = new FormData()
+            form.append 'image', file, file.name
+            fetch("/plugin/image/upload/#{archiveFilename}", {
+              method: 'POST',
+              body: form
+            })
+            .then (response) ->
+              if response.ok
+                item.url = "/assets/plugins/image/" + archiveFilename
+            .catch (err) ->
+              console.log('image archive failed (save)', err)
           .catch (err) ->
-            console.log('image archive failed (save)', err)
-        .catch (err) ->
-          console.log('image archive failed', err)
-
-
-      wiki.doPlugin $item.empty(), item
-      return if item is original
-      if item.hasOwnProperty('caption')
-        delete item.caption 
-      wiki.pageHandler.put $page, { type: 'edit', id: item.id, item: item }
+            console.log('image archive failed', err)
+      
+        wiki.doPlugin $item.empty(), item
+        return if item is original
+        if item.hasOwnProperty('caption')
+          delete item.caption 
+        wiki.pageHandler.put $page, { type: 'edit', id: item.id, item: item }
+      else
+        index = $(".item").index($item)
+        wiki.renderFrom index
 
     else
       wiki.pageHandler.put $page, { type: 'remove', id: item.id }
       index = $(".item").index($item)
       $item.remove()
       wiki.renderFrom index
-
+    null
 
 
   return if $item.hasClass 'imageEditing'
