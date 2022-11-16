@@ -98,11 +98,11 @@ bind = ($item, item) ->
     if $item.offset().left - $item.parent().offset().left < 200
       $item.addClass('left') 
 
-  $item.dblclick ->
+  $item.on 'dblclick', () ->
     editor({ $item, item })
 
 
-  $item.find('img').dblclick (event) ->
+  $item.find('img').on 'dblclick', (event) ->
     event.stopPropagation()
     url = if item.source?
       # somehow test for continued existnace? Maybe register an error handler?
@@ -140,7 +140,7 @@ editor = (spec) ->
   if item.type is 'factory'
     document.documentElement.style.cursor = 'default'
     $item.removeClass('factory').addClass(item.type = 'image')
-    $item.unbind()
+    $item.off()
     newImage = true
     item.source = imageSourceURL
   else
@@ -150,12 +150,12 @@ editor = (spec) ->
 
     if e.which is 27 # esc for save
       e.preventDefault()
-      $item.focusout()
+      $item.trigger 'focusout'
       return false
 
     if (e.ctrlKey or e.metaKey) and e.which is 83 # ctrl-s for save
       e.preventDefault()
-      $item.focusout()
+      $item.trigger 'focusout'
       return false
     
     if (e.ctrlKey or e.metaKey) and e.which is 73 # ctrl-i for information
@@ -177,7 +177,7 @@ editor = (spec) ->
     # if newImage
     #   item.url = await resizeImage imageDataURL
     $item.removeClass 'imageEditing'
-    $item.unbind()
+    $item.off()
     if $item.find('textarea').val().length > 0
 
       captionChanged = item.text != $item.find('textarea').val()
@@ -243,7 +243,7 @@ editor = (spec) ->
 
   return if $item.hasClass 'imageEditing'
   $item.addClass 'imageEditing'
-  $item.unbind()
+  $item.off()
   original = JSON.parse(JSON.stringify(item))
   if newImage
     imageLocation = await exifr.gps(imageDataURL)
@@ -320,10 +320,10 @@ editor = (spec) ->
       )
 
 
-  $item.focusout focusoutHandler
-    .bind 'keydown', keydownHandler  
+  $item.on 'focusout', focusoutHandler
+    .on 'keydown', keydownHandler  
 
-  $imageEditor.focus()
+  $imageEditor.trigger 'focus'
   
   # from https://web.archive.org/web/20140327091827/http://www.benknowscode.com/2014/01/resizing-images-in-browser-using-canvas.html
   # Patrick Oswald version from comment, coffeescript and further simplification for wiki
