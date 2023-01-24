@@ -311,13 +311,11 @@ editor = (spec) ->
 
     $item.find("#size-select option[value='#{imgCurrentSize}']").attr('selected', true)
     
-    $('#size-select').change( () ->
+    $('#size-select').on 'change', () ->
       $item.removeClass("thumbnail wide")
       $item.addClass($(this).val())
       $item.find('img').removeClass("thumbnail wide")
         .addClass($(this).val())
-      
-      )
 
 
   $item.on 'focusout', focusoutHandler
