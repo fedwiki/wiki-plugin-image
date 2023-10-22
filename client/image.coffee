@@ -133,6 +133,7 @@ editor = (spec) ->
           return "thumbnail"
 
   { $item, item } = spec
+  console.log('openning editor', spec)
   return unless $('.editEnable').is(':visible')
   
   # if new image is being added we have some extra information
@@ -246,12 +247,16 @@ editor = (spec) ->
   $item.off()
   original = JSON.parse(JSON.stringify(item))
   if newImage
+    console.log('about to call exifr')
     imageLocation = await exifr.gps(imageDataURL)
+    console.log('back from exifr', imageLocation)
     if imageLocation
       exifrAvailable = true
       item.location = imageLocation
+    console.log('about to call imageSize')
     imgPossibleSize = await imageSize(imageDataURL)
     imgURL = imageDataURL
+    console.log('size/URL', {imgPossibleSize, imgURL})
   else
     imgPossibleSize = if $item.children('img').first()[0].naturalWidth > 415 then 'wide' else 'thumbnail'
     imgURL = $item.children('img').first().attr('src')
