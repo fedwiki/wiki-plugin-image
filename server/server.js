@@ -92,6 +92,50 @@ startServer = (params) => {
       }
     })
   })
+
+  app.get(/^\/plugin\/image\/gallery.html/, authorized, function(req, res){
+    console.log('image - gallery')
+    console.log('gallery - path', argv, __dirname)
+    gallery = ""
+    imageDir = path.join(argv.assets, 'plugins', 'image')
+    fs.readdir(imageDir, {withFileTypes: true}, (err, files) => {
+      files.forEach(file => {
+        if (file.isFile() && !file.name.startsWith('.')) {
+          gallery += `
+          <div>
+            <img src="/assets/plugins/image/${file.name}" />
+          </div>
+          `
+        }
+      })
+      res.send(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Image Gallery</title>
+            <style>
+              #gallery div img {
+                max-width: 183px;
+                width: 100%;
+              }
+              #gallery {
+                display: grid;
+                grid-gap: 5px;
+                grid-template-columns: repeat(auto-fit, minmax(183px, 1fr));
+                grid-auto-rows: auto;
+                grid-auto-flow: dense;
+              }
+            </style>
+          </head>
+          <body>
+            <div id="gallery">
+              ${gallery}
+            </div>
+          </body>
+        </html>
+      `)
+    })
+  })
 }
 
 module.exports = { startServer }
