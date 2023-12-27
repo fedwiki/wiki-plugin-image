@@ -90,6 +90,70 @@ emit = ($item, item) ->
           .catch (err) ->
             console.log('image archive failed', err)
         )
+      else
+        if !item.url.startsWith('/assets/plugins/image/')
+          overlay = document.createElement('a')
+          overlay.setAttribute('href', '#')
+          overlay.setAttribute('title', 'import this image')
+          overlay.setAttribute('class', 'overlay')
+          flag = document.createElement('img')
+          flag.setAttribute('src', '/plugins/image/import.svg')
+          flag.setAttribute('class', 'overlay')
+          overlay.append(flag)
+          if $( this )[0].nextSibling
+            $( this )[0].parentNode.insertBefore(overlay, $( this )[0].nextSibling)
+          else
+            $( this )[0].parentNode.appendChild(overlay)
+          $( flag ).on('click', (e) ->
+            e.preventDefault()
+            imageSource = e.target.parentNode.previousSibling.src
+            fetch(imageSource)
+            .then (response) ->
+              if response.ok
+                return response.blob()
+              throw new Error('Unable to fetch image')
+            .then (imageBlob) ->
+              reader = new FileReader()
+              reader.readAsDataURL(imageBlob)
+              reader.onload = (loadEvent) ->
+                imageDataURL = loadEvent.target.result
+                archiveImage = await resizeImage(imageDataURL, 'archive')
+                archiveFilename = md5(imageDataURL) + '.jpg'
+                await fetch(archiveImage)
+                .then (response) ->
+                  response.blob()
+                .then (blob) ->
+                  file = new File(
+                    [blob],
+                    archiveFilename,
+                    { type: blob.type }
+                  )
+                  form = new FormData()
+                  form.append 'image', file, file.name
+                  fetch("/plugin/image/upload/#{archiveFilename}", {
+                    method: 'POST',
+                    body: form
+                  })
+                  .then (response) ->
+                    if response.ok
+                      item.url = "/assets/plugins/image/" + archiveFilename
+                  # image has now been saved locally, so update page item
+                  .then () ->
+                    $page = $item.parents('.page:first')
+                    # remove click handler and overlay
+                    $( flag ).off('click')
+                    overlay.parentNode.removeChild(overlay)
+                    # update height and width, old items likely don't have these
+                    item.width = $item.children('img')[0].width
+                    item.height = $item.children('img')[0].height
+                    wiki.pageHandler.put $page, { type: 'edit', id: item.id, item: item }
+
+
+                  .catch (err) ->
+                    console.log('image archive failed (save)', err)
+                .catch (err) ->
+                  console.log('image archive failed', err)
+          )
       )
 
 bind = ($item, item) ->
@@ -328,60 +392,60 @@ editor = (spec) ->
 
   $imageEditor.trigger 'focus'
   
-  # from https://web.archive.org/web/20140327091827/http://www.benknowscode.com/2014/01/resizing-images-in-browser-using-canvas.html
-  # Patrick Oswald version from comment, coffeescript and further simplification for wiki
+# from https://web.archive.org/web/20140327091827/http://www.benknowscode.com/2014/01/resizing-images-in-browser-using-canvas.html
+# Patrick Oswald version from comment, coffeescript and further simplification for wiki
 
-  resizeImage = (dataURL) ->
-    src = new Image
-    cW = undefined
-    cH = undefined
-    # target sizes
+resizeImage = (dataURL) ->
+  src = new Image
+  cW = undefined
+  cH = undefined
+  # target sizes
 
-    tW = 1920
-    tH = 1080
-    
-    # image quality
-    imageQuality = 0.5
+  tW = 1920
+  tH = 1080
+  
+  # image quality
+  imageQuality = 0.5
 
-    smallEnough = (img) ->
-      img.width <= tW and img.height <= tH
+  smallEnough = (img) ->
+    img.width <= tW and img.height <= tH
 
+  new Promise (resolve) ->
+    src.src = dataURL
+    src.onload = ->
+      resolve()
+  .then () ->
+    cW = src.naturalWidth
+    cH = src.naturalHeight
+  .then () ->
+    # determine size for first squeeze
+    return if smallEnough src
+
+    oversize = Math.max 1, cW/tW, cH/tH
+    iterations = Math.floor Math.log2 oversize
+    prescale = oversize / 2**iterations
+
+    cW = Math.round(cW / prescale)
+    cH = Math.round(cH / prescale)
+
+  .then () ->
     new Promise (resolve) ->
-      src.src = dataURL
-      src.onload = ->
-        resolve()
-    .then () ->
-      cW = src.naturalWidth
-      cH = src.naturalHeight
-    .then () ->
-      # determine size for first squeeze
-      return if smallEnough src
-
-      oversize = Math.max 1, cW/tW, cH/tH
-      iterations = Math.floor Math.log2 oversize
-      prescale = oversize / 2**iterations
-
-      cW = Math.round(cW / prescale)
-      cH = Math.round(cH / prescale)
-
-    .then () ->
-      new Promise (resolve) ->
-        tmp = new Image
-        tmp.src = src.src
-        tmp.onload = ->
-          if smallEnough tmp
-            return resolve dataURL  
-          canvas = document.createElement('canvas')
-          canvas.width = cW
-          canvas.height = cH
-          context = canvas.getContext('2d')
-          context.drawImage tmp, 0, 0, cW, cH
-          dataURL = canvas.toDataURL('image/jpeg', imageQuality)
-          cW /= 2
-          cH /= 2
-          tmp.src = dataURL
-    .then ->
-      return dataURL
+      tmp = new Image
+      tmp.src = src.src
+      tmp.onload = ->
+        if smallEnough tmp
+          return resolve dataURL  
+        canvas = document.createElement('canvas')
+        canvas.width = cW
+        canvas.height = cH
+        context = canvas.getContext('2d')
+        context.drawImage tmp, 0, 0, cW, cH
+        dataURL = canvas.toDataURL('image/jpeg', imageQuality)
+        cW /= 2
+        cH /= 2
+        tmp.src = dataURL
+  .then ->
+    return dataURL
 
 
 
