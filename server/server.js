@@ -93,7 +93,7 @@ startServer = (params) => {
     })
   })
 
-  app.get(/^\/plugin\/image\/gallery.html/, authorized, function(req, res){
+  app.get(/^\/plugin\/image\/gallery.html/, function(req, res){
     console.log('image - gallery')
     console.log('gallery - path', argv, __dirname)
     gallery = ""
@@ -101,10 +101,25 @@ startServer = (params) => {
     fs.readdir(imageDir, {withFileTypes: true}, (err, files) => {
       files.forEach(file => {
         if (file.isFile() && !file.name.startsWith('.')) {
+          stats = fs.statSync(path.join(imageDir, file.name))
+          alt = `Filename : ${file.name}`
+          alt += `\nSize\t: ${(stats.size / 1024).toFixed(2)} kB`
+          alt += `\nAdded\t: ${stats.birthtime}`
+          switch (stats.nlink) {
+            case 1:
+              alt += '\nImage is not in commons'
+              break;
+            case 2:
+              alt += '\nNot used elsewhere in this farm'
+              break;
+            default:
+              alt += `\nUsed in ${stats.nlink - 2} other wiki in this farm`
+          }
+            
           gallery += `
-          <li>
-            <img src="/assets/plugins/image/${file.name}" loading="lazy"/>
-          </li>
+          <div>
+            <img src="/assets/plugins/image/${file.name}" title="${alt}" />
+          </div>
           `
         }
       })
@@ -115,11 +130,12 @@ startServer = (params) => {
             <title>Image Gallery</title>
             <link id='favicon' href='/favicon.png' rel='icon' type='image/png'>
             <link href='/plugins/image/gallery.css' rel='stylesheet' type='text/css'>
+            <script type='module' src='/plugins/image/gallery.js' ></script>
           </head>
           <body>
-            <ul id="gallery">
+            <div class="gallery" id="gallery">
               ${gallery}
-            </ul>
+            </div>
           </body>
         </html>
       `)
