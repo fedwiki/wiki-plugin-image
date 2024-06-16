@@ -102,9 +102,9 @@ startServer = (params) => {
       files.forEach(file => {
         if (file.isFile() && !file.name.startsWith('.')) {
           gallery += `
-          <div>
-            <img src="/assets/plugins/image/${file.name}" />
-          </div>
+          <li>
+            <img src="/assets/plugins/image/${file.name}" loading="lazy"/>
+          </li>
           `
         }
       })
@@ -113,24 +113,13 @@ startServer = (params) => {
         <html>
           <head>
             <title>Image Gallery</title>
-            <style>
-              #gallery div img {
-                max-width: 183px;
-                width: 100%;
-              }
-              #gallery {
-                display: grid;
-                grid-gap: 5px;
-                grid-template-columns: repeat(auto-fit, minmax(183px, 1fr));
-                grid-auto-rows: auto;
-                grid-auto-flow: dense;
-              }
-            </style>
+            <link id='favicon' href='/favicon.png' rel='icon' type='image/png'>
+            <link href='/plugins/image/gallery.css' rel='stylesheet' type='text/css'>
           </head>
           <body>
-            <div id="gallery">
+            <ul id="gallery">
               ${gallery}
-            </div>
+            </ul>
           </body>
         </html>
       `)
