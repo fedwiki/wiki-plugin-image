@@ -28,7 +28,6 @@ img {
 	object-fit: cover;
 	border-radius: 5px;
 }
-
 .gallery {
 	display: grid;
 	grid-gap: 10px;
@@ -48,4 +47,25 @@ img {
 .gallery .big {
 	grid-column: span 2;
 	grid-row: span 2;
+}
+
+#fullpage {
+  display: block;
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-repeat: no-repeat no-repeat;
+  background-position: center center;
+  background-color: black;
+}
+
+.scale {
+  background-size: contain;
+}
+
+.hidden {
+	display: none !important;
 }

@@ -1,7 +1,8 @@
 window.addEventListener('load', () => {
+  const gallery = document.querySelector('#gallery')
+  const fullPage = document.querySelector('#fullpage')
   document.querySelectorAll('img').forEach((img) => {
     const ratio = img.naturalWidth / img.naturalHeight
-    console.log(img, ratio, img.naturalWidth, img.naturalHeight)
     let divClass = null
     if (img.naturalWidth <= 200 || img.naturalHeight <= 200) {
       divClass = 'small'
@@ -17,8 +18,41 @@ window.addEventListener('load', () => {
     if (divClass) {
       img.closest('div').classList.add(divClass)
     }
+    
     img.addEventListener('click', () => {
-      img.classList.toggle('full')
+
+      const controller = new AbortController()
+      var delay = 250
+      var throttled = false
+
+      fullPage.classList.remove('hidden')
+      gallery.classList.add('hidden')
+
+      fullPage.style.backgroundImage = 'url(' + img.src + ')'
+      if (img.naturalHeight >= window.innerHeight || img.naturalWidth >= window.innerWidth) {
+        fullPage.classList.add('scale')
+      } else {
+        fullPage.classList.remove('scale')
+      }
+
+      window.addEventListener('resize', () => {
+        if (!throttled) {
+          if (img.naturalHeight >= window.innerHeight || img.naturalWidth >= window.innerWidth) {
+            fullPage.classList.add('scale')
+          } else {
+            fullPage.classList.remove('scale')
+          }
+          throttled = true
+          setTimeout(() => {
+            throttled = false
+          }, delay)
+        }
+      }, { signal: controller.signal })
+      fullPage.addEventListener('click', () => {
+        gallery.classList.remove('hidden')
+        fullPage.classList.add('hidden')
+        controller.abort()
+      }, { signal: controller.signal })
     })
   })
 })

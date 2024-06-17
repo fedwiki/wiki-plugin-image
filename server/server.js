@@ -136,6 +136,8 @@ startServer = (params) => {
             <div class="gallery" id="gallery">
               ${gallery}
             </div>
+            <div id="fullpage" class="hidden">
+            </div>
           </body>
         </html>
       `)
