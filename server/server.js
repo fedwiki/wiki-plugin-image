@@ -102,9 +102,9 @@ startServer = (params) => {
       files.forEach(file => {
         if (file.isFile() && !file.name.startsWith('.')) {
           stats = fs.statSync(path.join(imageDir, file.name))
-          alt = `Filename : ${file.name}`
-          alt += `\nSize\t: ${(stats.size / 1024).toFixed(2)} kB`
-          alt += `\nAdded\t: ${stats.birthtime}`
+          alt = `Filename: ${file.name}`
+          alt += `\nSize: ${(stats.size / 1024).toFixed(2)} kB`
+          alt += `\nAdded: ${stats.birthtime}`
           switch (stats.nlink) {
             case 1:
               alt += '\nImage is not in commons'
