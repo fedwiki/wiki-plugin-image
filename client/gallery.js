@@ -1,6 +1,7 @@
 window.addEventListener('load', () => {
   const gallery = document.querySelector('#gallery')
   const fullPage = document.querySelector('#fullpage')
+  let scrollBackTo = null
   document.querySelectorAll('img').forEach((img) => {
     const ratio = img.naturalWidth / img.naturalHeight
     let divClass = null
@@ -24,6 +25,7 @@ window.addEventListener('load', () => {
       const controller = new AbortController()
       var delay = 250
       var throttled = false
+      scrollBackTo = img
 
       fullPage.classList.remove('hidden')
       gallery.classList.add('hidden')
@@ -51,6 +53,9 @@ window.addEventListener('load', () => {
       fullPage.addEventListener('click', () => {
         gallery.classList.remove('hidden')
         fullPage.classList.add('hidden')
+        if (scrollBackTo) {
+          scrollBackTo.scrollIntoView({ behavior: 'instant', block: 'center' })
+        }
         controller.abort()
       }, { signal: controller.signal })
     })
