@@ -1,3 +1,9 @@
+
+    // drawing inspiration from:
+    //    Saief Al Emon - masonry layout - https://codepen.io/iamsaief/details/jObaoKo
+    //    A Haworth - full screen view - https://stackoverflow.com/a/67816263
+  
+
 window.addEventListener('load', () => {
   const gallery = document.querySelector('#gallery')
   const fullPage = document.querySelector('#fullpage')
