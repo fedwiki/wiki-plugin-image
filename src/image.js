@@ -377,10 +377,10 @@ const editor = async spec => {
 
     $item.find(`#size-select option[value="${imgCurrentSize}"]`).attr('selected', true)
 
-    $('#size-select').on('change', () => {
+    $('#size-select').on('change', event => {
       $item.removeClass('thumbnail wide')
-      $item.addClass($(this).val())
-      $item.find('img').removeClass('thumbnail wide').addClass($(this.val()))
+      $item.addClass(event.target.value)
+      $item.find('img').removeClass('thumbnail wide').addClass(event.target.value)
     })
   }
 
