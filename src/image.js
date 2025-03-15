@@ -83,7 +83,7 @@ const emit = ($item, item) => {
               const file = new File([blob], archiveFilename, { type: blob.type })
               const form = new FormData()
               form.append('image', file, file.name)
-              return fetch(`/plugin/image/upload/${archiveFilename}`, {
+              return fetch(`/plugins/image/upload/${archiveFilename}`, {
                 method: 'POST',
                 body: form,
               })
@@ -99,7 +99,7 @@ const emit = ($item, item) => {
             })
         })
       } else {
-        if (!item.url.startsWith('/assets/plugin/image')) {
+        if (!item.url.startsWith('/assets/plugins/image')) {
           const overlay = document.createElement('a')
           overlay.setAttribute('href', '#')
           overlay.setAttribute('title', 'import this image')
@@ -135,11 +135,11 @@ const emit = ($item, item) => {
                       const file = new File([blob], archiveFilename, { type: blob.type })
                       const form = new FormData()
                       form.append('image', file, file.name)
-                      return fetch(`/plugin/image/upload/${archiveFilename}`, { method: 'POST', body: form })
+                      return fetch(`/plugins/image/upload/${archiveFilename}`, { method: 'POST', body: form })
                     })
                     .then(response => {
                       if (response.ok) {
-                        item.url = '/assets/plugin/image/' + archiveFilename
+                        item.url = '/assets/plugins/image/' + archiveFilename
                         // image has now been saved locally, so update page item
                         const $page = $item.parents('.page:first')
                         // remove click handler and overlay
@@ -277,7 +277,7 @@ const editor = async spec => {
               const file = new File([blob], archiveFilename, { type: blob.type })
               const form = new FormData()
               form.append('image', file, file.name)
-              return fetch(`/plugin/image/upload/${archiveFilename}`, {
+              return fetch(`/plugins/image/upload/${archiveFilename}`, {
                 method: 'POST',
                 body: form,
               })
