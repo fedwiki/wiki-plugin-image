@@ -18,6 +18,15 @@ export default [
     },
   },
   {
+    files: ['server/*.js'],
+    languageOptions: {
+      sourceType: 'module',
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+  {
     files: ['scripts/*.cjs'],
     languageOptions: {
       sourceType: 'commonjs',

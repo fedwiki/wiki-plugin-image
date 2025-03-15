@@ -47,7 +47,7 @@ const startServer = params => {
     }
   }
 
-  app.post(/^\/plugin\/image\/upload\/([a-f0-9]{32}\.\w+)$/, authorized, upload.single('image'), function (req, res) {
+  app.post(/^\/plugins\/image\/upload\/([a-f0-9]{32}\.\w+)$/, authorized, upload.single('image'), function (req, res) {
     console.log('image - upload', req.params[0])
     const imageFile = req.params[0]
     const commonsFile = path.join(argv.commons, imageFile)
@@ -60,11 +60,11 @@ const startServer = params => {
         fs.rename(uploadFile, commonsFile, err => {
           if (err) {
             console.log(`*** Image - rename of upload file fails, ${uploadFile} -> ${commonsFile} : ${err}`)
-            return res.status(500).send(`Failed saving image to commons: ${error}`)
+            return res.status(500).send(`Failed saving image to commons: ${err}`)
           }
           fs.link(commonsFile, assetFile, err => {
             if (err) {
-              console.log(`*** Image - failed to link to commons : ${commonFile} -> ${assetFile} : ${err}`)
+              console.log(`*** Image - failed to link to commons : ${commonsFile} -> ${assetFile} : ${err}`)
               return res.status(500).send(`Failed to link to commons: ${assetFile}`)
             }
             return res.end('success')
@@ -73,7 +73,7 @@ const startServer = params => {
       } else {
         fs.unlink(uploadFile, err => {
           if (err) {
-            console.log(`*** Image - failed to remove upload file, ${uploadFile} : ${error}`)
+            console.log(`*** Image - failed to remove upload file, ${uploadFile} : ${err}`)
           }
           fs.stat(assetFile, (err, stats) => {
             if (err) {
