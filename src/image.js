@@ -281,32 +281,39 @@ const editor = async spec => {
                 method: 'POST',
                 body: form,
               })
+                .then(response => {
+                  if (response.ok) {
+                    item.url = `/assets/plugins/image/${archiveFilename}`
+                  }
+                })
+                .catch(err => {
+                  console.log('image archive failed (save)', err)
+                })
             })
-            .then(response => {
-              if (response.ok) {
-                item.url = `/assets/plugins/image/${archiveFilename}`
-              }
+            .catch(err => {
+              console.log('image archive failed', err)
             })
-            .catch(err => console.log('image upload failed', err))
         }
 
         wiki.doPlugin($item.empty(), item)
+        if (item === original) return
         if (item !== original) {
           delete item.caption
-          wiki.pageHandler.put($page, { type: 'edit', id: item.id, item: item })
-        } else {
-          const index = $('.item').index($item)
-          wiki.renderFrom(index)
         }
+        wiki.pageHandler.put($page, { type: 'edit', id: item.id, item: item })
       } else {
-        wiki.pageHandler.put($page, { type: 'remove', id: item.id })
         const index = $('.item').index($item)
-        $item.remove()
         wiki.renderFrom(index)
       }
-      return null
+    } else {
+      wiki.pageHandler.put($page, { type: 'remove', id: item.id })
+      const index = $('.item').index($item)
+      $item.remove()
+      wiki.renderFrom(index)
     }
+    return null
   }
+
   if ($item.hasClass('imageEditing')) return
   $item.addClass('imageEditing')
   $item.off()
