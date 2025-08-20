@@ -92,6 +92,16 @@
       "type": "paragraph",
       "id": "733bc6c22c250608",
       "text": "When a page is forked, the plugin will use the page history to find the image if its not available locally to the page. Hovering over an image that is not available locally will display the flag, of the wiki where it was found, in the lower right corner of the image. Clicking on this flag will copy the image to the local wiki."
+    },
+    {
+      "type": "markdown",
+      "id": "1e7eb0443245a5fa",
+      "text": "# Image Gallery"
+    },
+    {
+      "type": "markdown",
+      "id": "22d50b881e312281",
+      "text": "See [[About Image Gallery]]."
     }
   ],
   "journal": [
@@ -690,6 +700,47 @@
         "733bc6c22c250608"
       ],
       "date": 1660658969141
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "1e7eb0443245a5fa"
+      },
+      "id": "1e7eb0443245a5fa",
+      "type": "add",
+      "after": "733bc6c22c250608",
+      "date": 1718730175269
+    },
+    {
+      "type": "edit",
+      "id": "1e7eb0443245a5fa",
+      "item": {
+        "type": "factory",
+        "id": "1e7eb0443245a5fa",
+        "text": "See [[About Image Gallery]]."
+      },
+      "date": 1718730249979
+    },
+    {
+      "type": "edit",
+      "id": "1e7eb0443245a5fa",
+      "item": {
+        "type": "markdown",
+        "id": "1e7eb0443245a5fa",
+        "text": "# Image Gallery"
+      },
+      "date": 1718730263086
+    },
+    {
+      "type": "add",
+      "id": "22d50b881e312281",
+      "item": {
+        "type": "markdown",
+        "id": "22d50b881e312281",
+        "text": "See [[About Image Gallery]]."
+      },
+      "after": "1e7eb0443245a5fa",
+      "date": 1718730264346
     }
   ]
 }
