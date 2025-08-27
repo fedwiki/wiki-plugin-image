@@ -18,12 +18,12 @@
     {
       "type": "markdown",
       "id": "468af8759c736e04",
-      "text": "Your <a href=\"/plugin/image/gallery.html\" target=\"_blank\" rel=\"noopener\">Image Gallery <img src=\"/images/external-link-ltr-icon.png\"></a>, *you may need to tell your browser to open this in a new window, for now*, will show you the images the plugin is managing for this wiki."
+      "text": "Your [/plugin/image/gallery.html Image Gallery], will show you the images the plugin is managing for this wiki."
     },
     {
       "type": "markdown",
       "id": "eafd18791bad6d13",
-      "text": "Hovering over an image will show its filename, size, date added, and if it is used in other wiki within the wiki farm."
+      "text": "Hovering over an image will show its filename, size, date added, and if it is used in any other wiki within the wiki farm."
     },
     {
       "type": "image",
@@ -142,7 +142,7 @@
       "item": {
         "type": "markdown",
         "id": "468af8759c736e04",
-        "text": "Your <a href=\"/plugin/image/gallery.html\" target=\"_blank\" rel=\"noopener\">Image Gallery <img src=\"/images/external-link-ltr-icon.png\"></a>, *you may need to tell your browser to open this in a new window, for now*, will show you the images the plugin is managing for this wiki."
+        "text": "Your [/plugin/image/gallery.html Image Gallery], will show you the images the plugin is managing for this wiki."
       },
       "date": 1718728285807
     },
@@ -275,7 +275,7 @@
       "item": {
         "type": "markdown",
         "id": "eafd18791bad6d13",
-        "text": "Hovering over an image will show its filename, size, date added, and if it is used in other wiki within the wiki farm."
+        "text": "Hovering over an image will show its filename, size, date added, and if it is used in any other wiki within the wiki farm."
       },
       "after": "468af8759c736e04",
       "date": 1718729338575
