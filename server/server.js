@@ -92,6 +92,57 @@ const startServer = params => {
       }
     })
   })
+
+  app.get('/plugin/image/gallery.html', (req, res) => {
+    console.log('image - gallery')
+    console.log('gallery - path', argv)
+    let gallery = ''
+    const imageDir = path.join(argv.assets, 'plugins', 'image')
+    fs.readdir(imageDir, { withFileTypes: true }, (err, files) => {
+      files.forEach(file => {
+        if (file.isFile() && !file.name.startsWith('.')) {
+          const stats = fs.statSync(path.join(imageDir, file.name))
+          let alt = `Filename: ${file.name}`
+          alt += `\nSize: ${(stats.size / 1024).toFixed(2)} kB`
+          alt += `\nAdded: ${stats.birthtime}`
+          switch (stats.nlink) {
+            case 1:
+              alt += '\nImage is not in commons'
+              break
+            case 2:
+              alt += '\nNot used elsewhere in this farm'
+              break
+            default:
+              alt += `\nUsed in ${stats.nlink - 2} other wiki in this farm`
+          }
+
+          gallery += `
+          <div>
+            <img src="/assets/plugins/image/${file.name}" title="${alt}" />
+          </div>
+          `
+        }
+      })
+      res.send(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Image Gallery</title>
+            <link id='favicon' href='/favicon.png' rel='icon' type='image/png'>
+            <link href='/plugins/image/gallery.css' rel='stylesheet' type='text/css'>
+            <script type='module' src='/plugins/image/gallery.js' ></script>
+          </head>
+          <body>
+            <div class="gallery" id="gallery">
+              ${gallery}
+            </div>
+            <div id="fullpage" class="hidden">
+            </div>
+          </body>
+        </html>
+      `)
+    })
+  })
 }
 
 export { startServer }

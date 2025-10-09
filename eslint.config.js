@@ -3,10 +3,10 @@ import pluginJs from '@eslint/js'
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  { ignores: ['client/**'] },
+  { ignores: ['client/image.js'] },
   pluginJs.configs.recommended,
   {
-    files: ['src/*.js'],
+    files: ['src/*.js', 'client/gallery.js'],
     languageOptions: {
       sourceType: 'module',
       globals: {

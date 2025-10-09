@@ -1,0 +1,284 @@
+{
+  "title": "About Image Gallery",
+  "story": [
+    {
+      "type": "paragraph",
+      "id": "229c625545e3cfa9",
+      "text": "Storing the images in a common location makes presenting a gallery of the images associated with a wiki simpler."
+    },
+    {
+      "type": "image",
+      "id": "9ef4eedcb4940998",
+      "text": "Example Image Gallery",
+      "size": "wide",
+      "width": 419,
+      "height": 275,
+      "url": "/plugins/image/514eafc76582432e50bb8ee05ded4fbe.jpg"
+    },
+    {
+      "type": "markdown",
+      "id": "468af8759c736e04",
+      "text": "Your [/plugin/image/gallery.html Image Gallery], will show you the images the plugin is managing for this wiki."
+    },
+    {
+      "type": "markdown",
+      "id": "eafd18791bad6d13",
+      "text": "Hovering over an image will show its filename, size, date added, and if it is used in any other wiki within the wiki farm."
+    },
+    {
+      "type": "image",
+      "id": "0dbdc63070af08d3",
+      "text": "Import this image",
+      "size": "thumbnail",
+      "width": 183,
+      "height": 133,
+      "url": "/plugins/image/a8e1de23bb05ff9ef91fb2b50164303c.jpg"
+    },
+    {
+      "type": "markdown",
+      "id": "7aee899a935738f5",
+      "text": "If you have images items that were created using an old version of this plugin. Those images probably only exist embedded in the page. You can update how those images are stored by clicking on the *import this image* (cloud) button that floats in the bottom right of image."
+    },
+    {
+      "type": "image",
+      "id": "de49b255327a5357",
+      "text": "Flag in corner of image, clicking forks the image to the current wiki.",
+      "size": "thumbnail",
+      "width": 183,
+      "height": 119,
+      "url": "/plugins/image/c5d5f81714a5890d5a1b482066fdf4d7.jpg"
+    },
+    {
+      "type": "markdown",
+      "id": "fe0d594af28d2a8b",
+      "text": "Other images might also be missing if they are in content from other wiki. You can bring them local to your wiki with the *fork this image* (flag of the remote wiki) button that floats in the bottom right of the image."
+    },
+    {
+      "type": "paragraph",
+      "id": "306623e7837fac85",
+      "text": "You can find all the pages with images in this wiki using the grep item, below."
+    },
+    {
+      "type": "grep",
+      "id": "4a326daa57e92641",
+      "text": "ITEM image"
+    }
+  ],
+  "journal": [
+    {
+      "type": "create",
+      "item": {
+        "title": "About Image Gallery",
+        "story": []
+      },
+      "date": 1718700001608
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "229c625545e3cfa9"
+      },
+      "id": "229c625545e3cfa9",
+      "type": "add",
+      "date": 1718700007153
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "9ef4eedcb4940998"
+      },
+      "id": "9ef4eedcb4940998",
+      "type": "add",
+      "after": "229c625545e3cfa9",
+      "date": 1718700025854
+    },
+    {
+      "type": "edit",
+      "id": "9ef4eedcb4940998",
+      "item": {
+        "type": "image",
+        "id": "9ef4eedcb4940998",
+        "text": "Example Image Gallery",
+        "size": "wide",
+        "width": 419,
+        "height": 275,
+        "url": "/plugins/image/514eafc76582432e50bb8ee05ded4fbe.jpg"
+      },
+      "date": 1718700064856
+    },
+    {
+      "type": "edit",
+      "id": "229c625545e3cfa9",
+      "item": {
+        "type": "paragraph",
+        "id": "229c625545e3cfa9",
+        "text": "Storing the images in a common location makes presenting a gallery of the images associated with a wiki simpler."
+      },
+      "date": 1718700364960
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "468af8759c736e04"
+      },
+      "id": "468af8759c736e04",
+      "type": "add",
+      "after": "9ef4eedcb4940998",
+      "date": 1718700377656
+    },
+    {
+      "type": "edit",
+      "id": "468af8759c736e04",
+      "item": {
+        "type": "markdown",
+        "id": "468af8759c736e04",
+        "text": "<a href=\"/plugin/image/gallery.html\" target=\"_blank\">Image Gallery</a>...."
+      },
+      "date": 1718701016470
+    },
+    {
+      "type": "edit",
+      "id": "468af8759c736e04",
+      "item": {
+        "type": "markdown",
+        "id": "468af8759c736e04",
+        "text": "Your [/plugin/image/gallery.html Image Gallery], will show you the images the plugin is managing for this wiki."
+      },
+      "date": 1718728285807
+    },
+    {
+      "type": "add",
+      "id": "7aee899a935738f5",
+      "item": {
+        "type": "markdown",
+        "id": "7aee899a935738f5",
+        "text": "If you have images items that were created using an old version of this plugin. Those images probably only exist embedded in the page."
+      },
+      "after": "468af8759c736e04",
+      "date": 1718728386317
+    },
+    {
+      "id": "0dbdc63070af08d3",
+      "type": "add",
+      "item": {
+        "type": "image",
+        "id": "0dbdc63070af08d3",
+        "text": "Import this image",
+        "size": "thumbnail",
+        "width": 183,
+        "height": 133,
+        "url": "/plugins/image/a8e1de23bb05ff9ef91fb2b50164303c.jpg"
+      },
+      "after": "7aee899a935738f5",
+      "date": 1718728562898
+    },
+    {
+      "id": "0dbdc63070af08d3",
+      "type": "move",
+      "order": [
+        "229c625545e3cfa9",
+        "9ef4eedcb4940998",
+        "468af8759c736e04",
+        "0dbdc63070af08d3",
+        "7aee899a935738f5"
+      ],
+      "date": 1718728567531
+    },
+    {
+      "type": "edit",
+      "id": "7aee899a935738f5",
+      "item": {
+        "type": "markdown",
+        "id": "7aee899a935738f5",
+        "text": "If you have images items that were created using an old version of this plugin. Those images probably only exist embedded in the page. You can update how those images are stored by clicking on the *import this image* (cloud) button that floats in the bottom right of image."
+      },
+      "date": 1718728774725
+    },
+    {
+      "id": "de49b255327a5357",
+      "type": "add",
+      "item": {
+        "type": "image",
+        "id": "de49b255327a5357",
+        "text": "Flag in corner of image, clicking forks the image to the current wiki.",
+        "size": "thumbnail",
+        "width": 183,
+        "height": 119,
+        "url": "/plugins/image/c5d5f81714a5890d5a1b482066fdf4d7.jpg"
+      },
+      "after": "7aee899a935738f5",
+      "date": 1718728836867
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "fe0d594af28d2a8b"
+      },
+      "id": "fe0d594af28d2a8b",
+      "type": "add",
+      "after": "de49b255327a5357",
+      "date": 1718728864849
+    },
+    {
+      "type": "edit",
+      "id": "fe0d594af28d2a8b",
+      "item": {
+        "type": "markdown",
+        "id": "fe0d594af28d2a8b",
+        "text": "Other images might also be missing if they are in content from other wiki. You can bring them local to your wiki with the *fork this image* (flag of the remote wiki) button that floats in the bottom right of the image."
+      },
+      "date": 1718729066812
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "306623e7837fac85"
+      },
+      "id": "306623e7837fac85",
+      "type": "add",
+      "after": "fe0d594af28d2a8b",
+      "date": 1718729089232
+    },
+    {
+      "item": {
+        "type": "factory",
+        "id": "4a326daa57e92641"
+      },
+      "id": "4a326daa57e92641",
+      "type": "add",
+      "after": "306623e7837fac85",
+      "date": 1718729092448
+    },
+    {
+      "type": "edit",
+      "id": "4a326daa57e92641",
+      "item": {
+        "type": "grep",
+        "id": "4a326daa57e92641",
+        "text": "ITEM image"
+      },
+      "date": 1718729098557
+    },
+    {
+      "type": "edit",
+      "id": "306623e7837fac85",
+      "item": {
+        "type": "paragraph",
+        "id": "306623e7837fac85",
+        "text": "You can find all the pages with images in this wiki using the grep item, below."
+      },
+      "date": 1718729171192
+    },
+    {
+      "type": "add",
+      "id": "eafd18791bad6d13",
+      "item": {
+        "type": "markdown",
+        "id": "eafd18791bad6d13",
+        "text": "Hovering over an image will show its filename, size, date added, and if it is used in any other wiki within the wiki farm."
+      },
+      "after": "468af8759c736e04",
+      "date": 1718729338575
+    }
+  ]
+}
