@@ -76,7 +76,6 @@ const emit = ($item, item) => {
           e.preventDefault()
           const imageNode = e.target.parentNode.previousSibling
           const archiveFilename = new URL(imageNode.src).pathname.split('/').pop()
-
           fetch(imageNode.src)
             .then(response => response.blob())
             .then(blob => {
@@ -127,7 +126,7 @@ const emit = ($item, item) => {
                 reader.readAsDataURL(imageBlob)
                 reader.onload = async loadEvent => {
                   const imageDataURL = loadEvent.target.result
-                  const archiveImage = await resizeImage(imageDataURL, 'archive')
+                  const archiveImage = await resizeImage(imageDataURL)
                   const archiveFilename = md5(imageDataURL) + '.jpg'
                   fetch(archiveImage)
                     .then(response => response.blob())
@@ -269,7 +268,7 @@ const editor = async spec => {
       // only save if newImage , caption, location, or size has been changed.
       if (newImage || captionChanged || locationChanged || sizeChanged) {
         if (newImage) {
-          const archiveImage = await resizeImage(imageDataURL, 'archive')
+          const archiveImage = await resizeImage(imageDataURL)
           const archiveFilename = md5(imageDataURL) + '.jpg'
           await fetch(archiveImage)
             .then(response => response.blob())
@@ -397,45 +396,47 @@ const editor = async spec => {
 }
 
 const resizeImage = async dataURL => {
-  const tW = 1920
-  const tH = 1080
-  const imageQuality = 0.5
-
-  const smallEnough = img => img.width <= tW && img.height <= tH
-
-  const src = new Image()
-  src.src = dataURL
-  await new Promise(resolve => (src.onload = resolve))
-
-  let cW = src.naturalWidth
-  let cH = src.naturalHeight
-
-  if (smallEnough(src)) return dataURL
-
-  const oversize = Math.max(1, cW / tW, cH / tH)
-  const iterations = Math.floor(Math.log2(oversize))
-  const prescale = oversize / 2 ** iterations
-
-  cW = Math.round(cW / prescale)
-  cH = Math.round(cH / prescale)
-
   return new Promise(resolve => {
-    const tmp = new Image()
-    tmp.src = src.src
-    tmp.onload = () => {
-      if (smallEnough(tmp)) {
-        resolve(dataURL)
+    const tW = 1920
+    const tH = 1080
+    const imageQuality = 0.92
+    const imageType = 'image/jpeg'
+
+    let firstSqueeze = true
+    let cW,
+      cH = undefined
+
+    const smallEnough = (width, height) => width <= tW && height <= tH
+
+    let tmpImage = new Image()
+    let tmpDataURL = undefined
+
+    tmpImage.src = dataURL
+    tmpImage.onload = () => {
+      cW = tmpImage.naturalWidth
+      cH = tmpImage.naturalHeight
+      if (firstSqueeze) {
+        // is the image already small enough?
+        if (smallEnough(cW, cH)) return resolve(dataURL)
+        const oversize = Math.max(1, cW / tW, cH / tH)
+        const iterations = Math.floor(Math.log2(oversize))
+        const prescale = oversize / 2 ** iterations
+        cW = Math.round(cW / prescale)
+        cH = Math.round(cH / prescale)
+        firstSqueeze = false
       } else {
-        const canvas = document.createElement('canvas')
-        canvas.width = cW
-        canvas.height = cH
-        const context = canvas.getContext('2d')
-        context.drawImage(tmp, 0, 0, cW, cH)
-        const newDataURL = canvas.toDataURL('image/jpg', imageQuality)
         cW /= 2
         cH /= 2
-        resolve(newDataURL)
       }
+      const canvas = document.createElement('canvas')
+      canvas.width = cW
+      canvas.height = cH
+      const context = canvas.getContext('2d')
+      context.drawImage(tmpImage, 0, 0, cW, cH)
+
+      tmpDataURL = canvas.toDataURL(imageType, imageQuality)
+      if (smallEnough(cW, cH)) return resolve(tmpDataURL)
+      tmpImage.src = tmpDataURL
     }
   })
 }
