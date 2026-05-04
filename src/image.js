@@ -237,7 +237,10 @@ const editor = async spec => {
     }
   }
 
-  const focusoutHandler = async event => {
+  const pointerdownHandler = async event => {
+    const isStillInside = $item[0].contains(event.target)
+    if (isStillInside) return
+    $(document).off('pointerdown', pointerdownHandler)
     const editorDiv = document.querySelector('.imageEditing')
     if (editorDiv.contains(event.relatedTarget)) return
     const $page = $item.parents('.page:first')
@@ -390,7 +393,8 @@ const editor = async spec => {
     })
   }
 
-  $item.on('focusout', focusoutHandler).on('keydown', keydownHandler)
+  $item.on('keydown', keydownHandler)
+  $(document).on('pointerdown', pointerdownHandler)
 
   $imageEditor.trigger('focus')
 }
