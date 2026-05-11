@@ -31,9 +31,6 @@
     "prettier:check": "prettier --check ./**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "peerDependencies": {
-    "wiki-client": "^0.31.6"
-  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "esbuild": "^0.28.0",
